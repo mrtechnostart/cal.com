@@ -48,16 +48,14 @@ const stepRouteSchema = z.object({
 const OnboardingPage = () => {
   const pathname = usePathname();
   const params = useParamsWithFallback();
-
   const router = useRouter();
   const [user] = trpc.viewer.me.useSuspenseQuery();
   const { t } = useLocale();
-
+  // Agr fail ho to currentStep automatic initial step pr chala jayega
   const result = stepRouteSchema.safeParse({
     ...params,
     step: Array.isArray(params.step) ? params.step : [params.step],
   });
-
   const currentStep = result.success ? result.data.step[0] : INITIAL_STEP;
   const from = result.success ? result.data.from : "";
   const headers = [

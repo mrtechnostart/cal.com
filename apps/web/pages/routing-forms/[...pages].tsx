@@ -15,7 +15,6 @@ export default function RoutingForms() {
 
 export const getServerSideProps = (context: GetServerSidePropsContext) => {
   const { pages } = paramsSchema.parse(context.params);
-
   return {
     redirect: {
       destination: `/apps/routing-forms/${pages.length ? pages.join("/") : ""}`,

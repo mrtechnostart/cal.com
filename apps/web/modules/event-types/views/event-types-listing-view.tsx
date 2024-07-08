@@ -110,11 +110,14 @@ const querySchema = z.object({
 
 const MobileTeamsTab: FC<MobileTeamsTabProps> = (props) => {
   const { eventTypeGroups } = props;
+  //tabs is basically all the teams to be scrolled in mobile view
   const tabs = eventTypeGroups.map((item) => ({
     name: item.profile.name ?? "",
     href: item.teamId ? `/event-types?teamId=${item.teamId}` : "/event-types?noTeam",
     avatar: item.profile.image,
   }));
+  // This basically picks up query params from the url, in this case teamId
+  //
   const { data } = useTypedQuery(querySchema);
   const events = eventTypeGroups.filter((item) => item.teamId === data.teamId);
 
@@ -241,7 +244,7 @@ export const EventTypeList = ({
       utils.viewer.eventTypes.invalidate();
     },
   });
-
+  // Why and what?
   const setHiddenMutation = trpc.viewer.eventTypes.update.useMutation({
     onMutate: async ({ id }) => {
       await utils.viewer.eventTypes.getByViewer.cancel();
@@ -732,7 +735,6 @@ const EventTypeListHeading = ({
       showToast(error.message, "error");
     },
   });
-
   return (
     <div className="mb-4 flex items-center space-x-2">
       <Avatar
@@ -774,7 +776,7 @@ const EventTypeListHeading = ({
     </div>
   );
 };
-
+// Renders when empty
 const CreateFirstEventTypeView = ({ slug }: { slug: string }) => {
   const { t } = useLocale();
 
@@ -878,6 +880,7 @@ const Main = ({
   const data = denormalizePayload(rawData);
   return (
     <>
+      Main Section
       {data.eventTypeGroups.length > 1 || isFilteredByOnlyOneItem ? (
         <>
           {isMobile ? (
@@ -935,6 +938,7 @@ const Main = ({
           />
         )
       )}
+      {/* Data Length When reaches Zero. We conditional render this */}
       {data.eventTypeGroups.length === 0 && <CreateFirstEventTypeView slug={data.profiles[0].slug ?? ""} />}
       <EventTypeEmbedDialog />
       {searchParams?.get("dialog") === "duplicate" && <DuplicateDialog />}
@@ -946,7 +950,7 @@ const EventTypesPage: React.FC & {
   PageWrapper?: AppProps["Component"]["PageWrapper"];
   getLayout?: AppProps["Component"]["getLayout"];
 } = () => {
-  const { t } = useLocale();
+  const { t } = useLocale(); // It parses custom text from the locale file
   const searchParams = useCompatSearchParams();
   const { open } = useIntercom();
   const { data: user } = useMeQuery();
@@ -998,14 +1002,14 @@ const EventTypesPage: React.FC & {
           };
         })
     : [];
-
+  console.log(data);
   return (
     <Shell
       withoutMain={false}
       title="Event Types"
       description="Create events to share for people to book on your calendar."
       withoutSeo
-      heading={t("event_types_page_title")}
+      heading={t("no_members_found")} // t is fetching heading from locale file
       hideHeadingOnMobile
       subtitle={t("event_types_page_subtitle")}
       beforeCTAactions={<Actions showDivider={profileOptions.length > 0} />}

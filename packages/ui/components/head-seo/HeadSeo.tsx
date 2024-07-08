@@ -75,7 +75,6 @@ export const HeadSeo = (props: HeadSeoProps): JSX.Element => {
   // Get the router's path
   // Set the default URL to either the current URL (if self-hosted) or https://cal.com canonical URL
   const defaultUrl = buildCanonical({ path, origin: props.origin || CAL_URL });
-
   const {
     title,
     description,

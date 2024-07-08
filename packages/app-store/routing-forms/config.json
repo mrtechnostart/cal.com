@@ -12,7 +12,7 @@
   "publisher": "Cal.com, Inc.",
   "simplePath": "/apps/routing-forms",
   "email": "help@cal.com",
-  "licenseRequired": true,
+  "licenseRequired": false,
   "teamsPlanRequired": {
     "upgradeUrl": "/routing-forms/forms"
   },

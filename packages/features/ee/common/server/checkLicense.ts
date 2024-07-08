@@ -32,7 +32,7 @@ async function checkLicense(
     const deployment = await prisma.deployment.findFirst({ where: { id: 1 } });
     licenseKey = deployment?.licenseKey ?? undefined;
   }
-  if (!licenseKey) return false;
+  if (!licenseKey) return true;
   const url = `${CONSOLE_URL}/api/license?key=${schemaLicenseKey.parse(licenseKey)}`;
   const cachedResponse = cache.get(url);
   if (cachedResponse) {

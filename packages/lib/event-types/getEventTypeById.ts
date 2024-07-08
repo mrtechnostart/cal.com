@@ -45,7 +45,6 @@ export const getEventTypeById = async ({
     locale: true,
     defaultScheduleId: true,
   });
-
   const rawEventType = await prisma.eventType.findFirst({
     where: {
       AND: [
