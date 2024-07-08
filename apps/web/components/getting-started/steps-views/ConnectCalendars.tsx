@@ -21,7 +21,11 @@ const ConnectedCalendars = (props: IConnectCalendarsProps) => {
     onlyInstalled: false,
     sortByMostPopular: true,
   });
-
+  // Explicitly Updates queryIntegrations
+  const calendarsRequired = ["googlecalendar", "applecalendar", "office365calendar"];
+  const calendarToShow = queryIntegrations?.data?.items.filter((el) => {
+    if (calendarsRequired.includes(el.dirName || "")) return el;
+  });
   const firstCalendar = queryConnectedCalendars.data?.connectedCalendars.find(
     (item) => item.calendars && item.calendars?.length > 0
   );
@@ -60,7 +64,8 @@ const ConnectedCalendars = (props: IConnectCalendarsProps) => {
       {firstCalendar === undefined && queryIntegrations.data && queryIntegrations.data.items.length > 0 && (
         <List className="bg-default divide-subtle border-subtle mx-1 divide-y rounded-md border p-0 dark:bg-black sm:mx-0">
           {queryIntegrations.data &&
-            queryIntegrations.data.items.map((item) => (
+            calendarToShow &&
+            calendarToShow.map((item) => (
               <li key={item.title}>
                 {item.title && item.logo && (
                   <AppConnectionItem

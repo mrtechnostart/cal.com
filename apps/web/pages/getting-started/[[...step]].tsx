@@ -10,26 +10,17 @@ import { APP_NAME } from "@calcom/lib/constants";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { useParamsWithFallback } from "@calcom/lib/hooks/useParamsWithFallback";
 import { trpc } from "@calcom/trpc";
-import { Button, StepCard, Steps } from "@calcom/ui";
-import { Icon } from "@calcom/ui";
+import { Button, Icon, StepCard, Steps } from "@calcom/ui";
 
 import PageWrapper from "@components/PageWrapper";
 import { ConnectedCalendars } from "@components/getting-started/steps-views/ConnectCalendars";
 import { ConnectedVideoStep } from "@components/getting-started/steps-views/ConnectedVideoStep";
-import { SetupAvailability } from "@components/getting-started/steps-views/SetupAvailability";
-import UserProfile from "@components/getting-started/steps-views/UserProfile";
 import { UserSettings } from "@components/getting-started/steps-views/UserSettings";
 
 export { getServerSideProps } from "@lib/getting-started/[[...step]]/getServerSideProps";
 
 const INITIAL_STEP = "user-settings";
-const steps = [
-  "user-settings",
-  "connected-calendar",
-  "connected-video",
-  "setup-availability",
-  "user-profile",
-] as const;
+const steps = ["user-settings", "connected-calendar", "connected-video"] as const;
 
 const stepTransform = (step: (typeof steps)[number]) => {
   const stepIndex = steps.indexOf(step);
@@ -71,18 +62,6 @@ const OnboardingPage = () => {
     {
       title: `${t("connect_your_video_app")}`,
       subtitle: [`${t("connect_your_video_app_instructions")}`],
-      skipText: `${t("set_up_later")}`,
-    },
-    {
-      title: `${t("set_availability")}`,
-      subtitle: [
-        `${t("set_availability_getting_started_subtitle_1")}`,
-        `${t("set_availability_getting_started_subtitle_2")}`,
-      ],
-    },
-    {
-      title: `${t("nearly_there")}`,
-      subtitle: [`${t("nearly_there_instructions")}`],
     },
   ];
 
@@ -143,15 +122,8 @@ const OnboardingPage = () => {
                 )}
                 {currentStep === "connected-calendar" && <ConnectedCalendars nextStep={() => goToIndex(2)} />}
 
-                {currentStep === "connected-video" && <ConnectedVideoStep nextStep={() => goToIndex(3)} />}
-
-                {currentStep === "setup-availability" && (
-                  <SetupAvailability
-                    nextStep={() => goToIndex(4)}
-                    defaultScheduleId={user.defaultScheduleId}
-                  />
-                )}
-                {currentStep === "user-profile" && <UserProfile />}
+                {currentStep === "connected-video" && <ConnectedVideoStep />}
+                {/* {currentStep === "user-profile" && <UserProfile />} */}
               </Suspense>
             </StepCard>
 
